@@ -4,6 +4,8 @@ var app = express();
 var unicornsRouter = require(__dirname + '/routes/unicorns_routes')
 var usersRouter = require(__dirname + '/routes/users_routes')
 
+process.env.APP_SECRET = process.env.APP_SECRET || 'changemechangemechangemechangeme';
+
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/unicorn_stream_dev');
 
 app.use(express.static('public'));

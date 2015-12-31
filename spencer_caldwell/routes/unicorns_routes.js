@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var Unicorn = require(__dirname + '/../models/unicorns');
 var handleError = require(__dirname + '/../lib/handle_server_error');
-var eatAuth = require(__dirname + '/../lib/eat_auth');
+// var eatAuth = require(__dirname + '/../lib/eat_auth');
 
 var unicornsRouter = module.exports = exports = express.Router();
 

@@ -1,5 +1,6 @@
 module.exports = function(req, res, next) {
   try {
+    debugger;
     var authString = req.headers.authorization;
     var basicString = authString.split(' ')[1];
     var basicBuffer = new Buffer(basicString, 'base64');
@@ -8,6 +9,7 @@ module.exports = function(req, res, next) {
       username: authArray[0],
       password: authArray[1]
     };
+    debugger;
     next();
   } catch(e) {
     console.log(e);

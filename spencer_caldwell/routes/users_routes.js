@@ -7,6 +7,7 @@ var basicHttp = require(__dirname + '/../lib/basic_http');
 var usersRouter = module.exports = exports = express.Router();
 
 usersRouter.post('/signup', jsonParser, function(req, res) {
+  debugger;
   var user = new User();
   user.auth.basic.username = req.body.username;
   user.username = req.body.username;
