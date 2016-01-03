@@ -1,12 +1,13 @@
 var chai = require('chai');
 var chaihttp = require('chai-http');
-chai.use(chaihttp);
 var expect = chai.expect;
+var mongoose = require('mongoose');
+var Unicorn = require(__dirname + '/../models/unicorns');
+
+chai.use(chaihttp);
 
 process.env.MONGOLAB_URI = 'mongodb://localhost/unicorn_stream_test';
 require(__dirname + '/../server');
-var mongoose = require('mongoose');
-var Unicorn = require(__dirname + '/../models/unicorns');
 
 describe('unicorn routes', function() {
   after(function(done) {
@@ -15,13 +16,14 @@ describe('unicorn routes', function() {
     });
   });
 
-  it('should be able to create a unicorn', function() {
+  it('should be able to create a unicorn', function(done) {
     var unicornData = {name: 'test unicorn'};
     chai.request('localhost:3000')
       .post('/api/unicorns')
       .send(unicornData)
       .end(function(err, res) {
         expect(err).to.eql(null);
+        expect(res.status).to.eql(200);
         expect(res.body.name).to.eql('test unicorn');
         expect(res.body).to.have.property('_id');
         done();
@@ -33,6 +35,7 @@ describe('unicorn routes', function() {
       .get('/api/unicorns')
       .end(function(err, res) {
         expect(err).to.eql(null);
+        expect(res.status).to.eql(200);
         expect(Array.isArray(res.body)).to.eql(true);
         done();
       });
@@ -44,15 +47,16 @@ describe('unicorn routes', function() {
         expect(err).to.eql(null);
         this.unicorn = data;
         done();
-      }.bind(this))
+      }.bind(this));
     });
 
     it('should be able to modify a unicorn', function(done) {
       chai.request('localhost:3000')
-        .put('/api/unicorn/' + this.unicorn._id)
-        .send({name: 'a different unicorn name'})
+        .put('/api/unicorns/' + this.unicorn._id)
+        .send({color: 'a different color'})
         .end(function(err, res) {
           expect(err).to.eql(null);
+          expect(res.status).to.eql(200);
           expect(res.body.msg).to.eql('success!');
           done();
         });
@@ -60,13 +64,13 @@ describe('unicorn routes', function() {
 
     it('should be able to murder a unicorn', function(done) {
       chai.request('localhost:3000')
-        .delete('/api/unicorns' + this.unicorn._id)
+        .delete('/api/unicorns/' + this.unicorn._id)
         .end(function(err, res) {
           expect(err).to.eql(null);
+          expect(res.status).to.eql(200);
           expect(res.body.msg).to.eql('success!');
           done();
         });
     });
   });
-
 });
