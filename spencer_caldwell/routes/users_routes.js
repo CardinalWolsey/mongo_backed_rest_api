@@ -1,12 +1,12 @@
 var express = require('express');
-var jsonParser = require('body-parser').json();
+var bodyParser = require('body-parser');
 var User = require(__dirname + '/../models/user');
 var handleError = require(__dirname + '/../lib/handle_server_error');
 var basicHttp = require(__dirname + '/../lib/basic_http');
 
 var usersRouter = module.exports = exports = express.Router();
 
-usersRouter.post('/signup', jsonParser, function(req, res) {
+usersRouter.post('/signup', bodyParser.json(), function(req, res) {
   debugger;
   var user = new User();
   user.auth.basic.username = req.body.username;
@@ -27,23 +27,23 @@ usersRouter.post('/signup', jsonParser, function(req, res) {
 
 usersRouter.get('/signin', basicHttp, function(req, res) {
   if (!(req.auth.username && req.auth.password)) {
-    console.log('no basic auth provided');
+    console.log('username or password were missing');
     return res.status(401).json({msg: 'authenticat says no ... period'});
   }
 
   User.findOne({'auth.basic.username': req.auth.username}, function(err, user) {
     if (err) {
-      console.log('no basic auth providid');
+      console.log('could not find the username');
       return res.status(401).json({msg: 'authenticat says talk to the hand'});
     }
 
     if (!user) {
-      console.log('no basic auth provided');
+      console.log('no user');
       return res.status(401).json({msg: 'authenticat says NOOOOO'});
     }
 
     if (!user.checkPassword(req.auth.password)) {
-      console.log('no basic auth provided');
+      console.log('incorrect password');
       return res.status(401).json({msg: 'authenticat says no'});
     }
 

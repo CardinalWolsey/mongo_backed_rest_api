@@ -8,8 +8,6 @@ process.env.APP_SECRET = process.env.APP_SECRET || 'changemechangemechangemechan
 
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/unicorn_stream_dev');
 
-app.use(express.static('public'));
-
 app.use('/api', unicornsRouter);
 app.use('/api', usersRouter);
 
