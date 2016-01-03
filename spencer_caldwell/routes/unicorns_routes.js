@@ -14,7 +14,7 @@ unicornsRouter.get('/unicorns', function(req, res) {
   });
 });
 
-unicornsRouter.post('/unicorns', bodyParser.json(), eatAuth, function(req, res) {
+unicornsRouter.post('/unicorns', bodyParser.json(), function(req, res) {
   var newUnicorn = new Unicorn(req.body);
   newUnicorn.save(function(err, data) {
     if (err) return handleError(err, res);
